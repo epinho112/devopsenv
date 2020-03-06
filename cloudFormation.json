@@ -48,7 +48,7 @@
                         "Fn::Join": [
                             "",
                             [
-                                "#!/bin/bash -xe",
+                                "#!/bin/bash -xe\n",
                                 "echo start\n",
                                 "wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add - \n",
                                 "echo 1\n",
