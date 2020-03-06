@@ -20,13 +20,20 @@
           "Type" : "AWS::EC2::SecurityGroup",
           "Properties" : {
             "GroupDescription" : "Provide Access to Jenkins Server",
-            "SecurityGroupIngress" : { 
+            "SecurityGroupIngress" : [{ 
                 "CidrIp" : "0.0.0.0/0",
                 "Description" : "Make Jenkins Accessible on Port 8080",
                 "FromPort" : 8080,
                 "ToPort" : 8080,
                 "IpProtocol" : "tcp"
-            }
+            },
+            { 
+                "CidrIp" : "0.0.0.0/0",
+                "Description" : "SSH into Jenkins Server",
+                "FromPort" : 22,
+                "ToPort" : 22,
+                "IpProtocol" : "tcp"
+            }]
           }
         },
         "UbuntuEc2": {
@@ -41,17 +48,28 @@
                         "Fn::Join": [
                             "",
                             [
-                                "#!/bin/bash -ex",
+                                "#!/bin/bash -xe",
+                                "echo start\n",
                                 "wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add - \n",
+                                "echo 1\n",
                                 "echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list \n",
+                                "echo 2\n",
                                 "sudo apt-get update \n",
+                                "echo 3\n",
                                 "sudo apt-get install default-jre -y \n",
+                                "echo 4\n",
                                 "sudo apt-get install jenkins -y \n",
+                                "echo 5\n",
                                 "sudo systemctl start jenkins \n",
+                                "echo 6\n",
                                 "sudo systemctl status jenkins \n",
+                                "echo 7\n",
                                 "sudo ufw allow 8080 \n",
+                                "echo 8\n",
                                 "sudo ufw allow OpenSSH \n",
-                                "sudo ufw --force enable \n"
+                                "echo 9\n",
+                                "sudo ufw --force enable \n",
+                                "echo End\n"
                             ]
                         ]
                     }
